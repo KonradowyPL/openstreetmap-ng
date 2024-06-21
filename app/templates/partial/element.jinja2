@@ -4,6 +4,8 @@
             <div class="col">
                 <h2>
                     <span class="sidebar-title">
+                        <img src="/static/img/element/{{ icon[0] }}" alt="{{ icon[1] }}" title="{{ icon[1] }}" class="d-inline-block h-100">
+
                         {% if element.type == 'node' %}
                         {{ t('javascripts.query.node') }}:
                         {% elif element.type == 'way' %}

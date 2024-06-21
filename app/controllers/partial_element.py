@@ -9,6 +9,7 @@ from sqlalchemy.orm import joinedload
 from app.format import FormatLeaflet
 from app.lib.element_list_formatter import format_element_members_list, format_element_parents_list
 from app.lib.feature_name import feature_name
+from app.lib.feature_icon import feature_icon
 from app.lib.options_context import options_context
 from app.lib.render_response import render_response
 from app.lib.tags_format import tags_format
@@ -211,6 +212,7 @@ async def _get_element_data(element: Element, at_sequence_id: int, *, include_pa
     name = feature_name(element.tags)
     tags = tags_format(element.tags)
     leaflet = FormatLeaflet.encode_elements(full_data, detailed=False)
+    icon = feature_icon(element.type, element.tags)
 
     return {
         'element': element,
@@ -222,6 +224,7 @@ async def _get_element_data(element: Element, at_sequence_id: int, *, include_pa
         'comment_tag': comment_tag,
         'show_elements': bool(list_elements),
         'show_part_of': bool(list_parents),
+        'icon' : icon,
         'params': JSON_ENCODE(
             {
                 'type': element.type,
