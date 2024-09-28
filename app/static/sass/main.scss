@@ -112,6 +112,9 @@ $bootstrap-icons-font-dir: "/static-bootstrap-icons";
 @import "user/signup";
 @import "user/terms";
 
+// (maplibre)
+@import "maplibre-gl/dist/maplibre-gl";
+
 // TODO: print style
 
 // Ritgh-to-left support using <html dir="rtl"> tag
