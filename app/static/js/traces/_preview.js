@@ -1,4 +1,4 @@
-import { Map } from "maplibre-gl"
+import * as maplibregl from "maplibre-gl"
 
 const tracePreviewContainer = document.querySelector(".trace-preview")
 if (tracePreviewContainer) {
@@ -15,7 +15,7 @@ if (tracePreviewContainer) {
         [Math.min(...lngs), Math.min(...lats)],
         [Math.max(...lngs), Math.max(...lats)],
     ]
-    const map = new Map({
+    const map = new maplibregl.Map({
         container: tracePreviewContainer,
         center: [0, 0],
         zoom: 13,
