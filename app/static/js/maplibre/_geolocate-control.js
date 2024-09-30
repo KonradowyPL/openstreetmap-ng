@@ -2,14 +2,13 @@ import * as maplibregl from "maplibre-gl"
 import i18next from "i18next"
 import { Tooltip } from "bootstrap"
 
-
 // TODO: make button accually work lol
 export const getGeolocateControl = (map) => {
     class GeolocationControl {
         onAdd(map) {
-            this._map = map;
-            this._container = document.createElement('div');
-            this._container.className = 'geolocate maplibregl-ctrl maplibregl-ctrl-group';
+            this._map = map
+            this._container = document.createElement("div")
+            this._container.className = "geolocate maplibregl-ctrl maplibregl-ctrl-group"
             const button = document.createElement("button")
             const icon = document.createElement("img")
             this._container.appendChild(button)
@@ -25,12 +24,12 @@ export const getGeolocateControl = (map) => {
                 placement: "left",
             })
 
-            return this._container;
+            return this._container
         }
 
         onRemove() {
-            this._container.parentNode.removeChild(this._container);
-            this._map = undefined;
+            this._container.parentNode.removeChild(this._container)
+            this._map = undefined
         }
     }
 

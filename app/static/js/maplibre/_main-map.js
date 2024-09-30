@@ -2,8 +2,6 @@ import * as maplibregl from "maplibre-gl"
 import { getZoomControl } from "./_zoom-control"
 import { getGeolocateControl } from "./_geolocate-control"
 
-
-
 const getMainMap = (container) => {
     console.debug("Initializing main map")
 
@@ -51,9 +49,7 @@ const getMainMap = (container) => {
     })
     map.addControl(getZoomControl())
     map.addControl(getGeolocateControl())
-
 }
-
 
 export const configureMainMap = (container) => {
     const map = getMainMap(container)
