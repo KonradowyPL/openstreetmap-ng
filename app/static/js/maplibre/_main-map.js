@@ -1,6 +1,7 @@
 import * as maplibregl from "maplibre-gl"
-import { getZoomControl } from "./_zoom-control"
+import { ControlGroup } from "./_controls"
 import { getGeolocateControl } from "./_geolocate-control"
+import { getSidebarToggleButton } from "./_sidebar-toggle-button"
 
 const getMainMap = (container) => {
     console.debug("Initializing main map")
@@ -47,8 +48,9 @@ const getMainMap = (container) => {
             ],
         },
     })
-    map.addControl(getZoomControl())
-    map.addControl(getGeolocateControl())
+
+    map.addControl(new maplibregl.NavigationControl())
+    map.addControl(new ControlGroup([getGeolocateControl, getLayersSidebarToggleButton]))
 }
 
 export const configureMainMap = (container) => {
