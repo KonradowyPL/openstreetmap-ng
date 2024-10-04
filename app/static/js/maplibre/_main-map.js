@@ -1,7 +1,7 @@
 import * as maplibregl from "maplibre-gl"
 import { ControlGroup } from "./_controls"
 import { getGeolocateControl } from "./_geolocate-control"
-import { getSidebarToggleButton } from "./_sidebar-toggle-button"
+import { getChangeLayerButton } from "./_layers-change"
 
 const getMainMap = (container) => {
     console.debug("Initializing main map")
@@ -50,7 +50,7 @@ const getMainMap = (container) => {
     })
 
     map.addControl(new maplibregl.NavigationControl())
-    map.addControl(new ControlGroup([getGeolocateControl, getLayersSidebarToggleButton]))
+    map.addControl(new ControlGroup([getGeolocateControl, getChangeLayerButton]))
 }
 
 export const configureMainMap = (container) => {
