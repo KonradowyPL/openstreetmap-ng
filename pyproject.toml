@@ -58,13 +58,13 @@ version = "0.0.0"
 dev-dependencies = [
   "cairosvg",
   "click",
+  "coverage",
   "httpx",
   "lxml-stubs",
   "polars[numpy]",
   "pre-commit",
   "pytest",
   "pytest-asyncio",
-  "pytest-cov",
   "types-aioboto3[s3]",
   "types-protobuf",
 ]
@@ -247,3 +247,6 @@ asyncio_default_fixture_loop_scope = "session"
 asyncio_mode = "auto"
 minversion = "6.0"
 testpaths = ["tests"]
+
+[tool.coverage.run]
+source = ["app"]
