@@ -9,7 +9,7 @@ export const switchRightbar = (className) => {
 // TODO: add active class to buttons
 
 export const toggleRightbar = (className) => {
-    if (rightbar.querySelector(`.${className}.d-none`)) switchRightbar(className)
+    if (rightbar.querySelector(`&>.${className}.d-none`)) switchRightbar(className)
     else closeRightbar()
 }
 
@@ -17,11 +17,19 @@ export const closeRightbar = () => {
     for (const element of rightbar.children) element.classList.add("d-none")
 }
 
+export const getRightBar = (className) => rightbar.querySelector(`&>.${className}`)
+
+export const registerButton = (button, className) => {
+    button.onclick = () => {
+        toggleRightbar(className)
+        button.blur()
+    }
+}
+
 // debugging porposes ONLY!!
 // TODO: remove this
 window.rightbar = rightbar
 
 for (const element of rightbar.children) {
-    console.log(element)
     element.querySelector(".sidebar-close-btn").onclick = () => closeRightbar()
 }

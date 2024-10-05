@@ -19,7 +19,6 @@ export class NavigationControl extends maplibregl.NavigationControl {
             placement: "left",
         })
 
-
         return container
     }
 }

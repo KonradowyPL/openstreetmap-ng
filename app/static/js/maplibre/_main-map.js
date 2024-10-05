@@ -5,6 +5,8 @@ import { getChangeLayerButton } from "./_rightbar-layer"
 import { getShowLegendButton } from "./_rightbar-legend"
 import { getShareButton } from "./_rightbar-share"
 import { NavigationControl } from "./_navigation-control"
+import { layers } from "./_layers"
+
 
 const getMainMap = (container) => {
     console.debug("Initializing main map")
@@ -15,10 +17,6 @@ const getMainMap = (container) => {
         zoom: 13,
         hash: false,
         attributionControl: {
-            position: "top-left",
-            // TODO: propper attribution
-            // TODO: import map styles
-            customAttribution: "© OpenStreetMap contributors",
             compact: false,
         },
         style: {
@@ -26,15 +24,7 @@ const getMainMap = (container) => {
             version: 8,
             center: [0, 0],
             zoom: 0,
-            sources: {
-                "raster-tiles": {
-                    type: "raster",
-                    tiles: ["https://tile.openstreetmap.org/{z}/{x}/{y}.png"],
-                    tileSize: 256,
-                    minzoom: 0,
-                    maxzoom: 19,
-                },
-            },
+            sources: layers,
             layers: [
                 {
                     id: "background",
@@ -44,16 +34,21 @@ const getMainMap = (container) => {
                     },
                 },
                 {
-                    id: "simple-tiles",
+                    id: "main-map",
                     type: "raster",
-                    source: "raster-tiles",
+                    source: "standardLayer",
                 },
             ],
         },
     })
 
+    window.map = map
     map.addControl(new NavigationControl())
     map.addControl(new ControlGroup([getGeolocateControl, getChangeLayerButton, getShowLegendButton, getShareButton]))
+
+    map.on("load", () => {
+        console.debug("Map has fully loaded!")
+    })
 }
 
 export const configureMainMap = (container) => {
