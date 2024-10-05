@@ -11,6 +11,8 @@ export const getGeolocateControl = (map) => {
     icon.classList = "icon geolocate"
     icon.src = "/static/img/leaflet/geolocate.webp"
 
+    button.onclick = () => button.blur()
+
     new Tooltip(button, {
         title: i18next.t("javascripts.map.locate.title"),
         placement: "left",
