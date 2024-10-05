@@ -8,11 +8,18 @@ const sidebarToggleContainers = []
 
 export const getChangeLayerButton = (map) => {
     const button = document.createElement("button")
-    const icon = document.createElement("img")
+    const icon = document.createElement("span")
+    icon.classList = "icon layers"
+
     button.appendChild(icon)
     button.className = "control-button"
 
     button.onclick = () => toggleRightbar("layers")
+
+    new Tooltip(button, {
+        title: i18next.t("javascripts.map.layers.title"),
+        placement: "left",
+    })
 
     return button
 }
