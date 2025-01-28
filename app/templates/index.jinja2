@@ -8,6 +8,67 @@
 {% endblock %}
 {% block body_class %}map-body{% endblock %}
 {% block body %}
+    <script>(function overrideCreateElement() {
+    // Store the original document.createElement function
+    const originalCreateElement = document.createElement;
+
+    // Override document.createElement
+    document.createElement = function (tagName, ...args) {
+        const element = originalCreateElement.call(document, tagName, ...args);
+
+        // Check if the created element is a canvas
+        if (tagName.toLowerCase() === "canvas") {
+            console.log("Canvas element created. Applying proxy.");
+            createCanvasLoggerProxy(element);
+        }
+
+        return element;
+    };
+
+    // Proxy creation function (same as before)
+    function createCanvasLoggerProxy(canvas) {
+        if (!(canvas instanceof HTMLCanvasElement)) {
+            throw new Error("The provided element is not a canvas.");
+        }
+
+        const originalGetContext = canvas.getContext.bind(canvas);
+
+        canvas.getContext = function (type, ...args) {
+            if (type !== "webgl2") {
+                // If another context type is requested, return the original result
+                return originalGetContext(type, ...args);
+            }
+
+            const originalContext = originalGetContext(type, ...args);
+            if (!originalContext) {
+                throw new Error("Unable to get WebGL2 context for the canvas.");
+            }
+
+            // Proxy handler to log method calls and property access
+            const handler = {
+                get(target, prop) {
+                    if (typeof target[prop] === "function") {
+                        return function (...args) {
+                            console.log(`WebGL2 method called: ${prop}(${args.map(arg => JSON.stringify(arg)).join(", ")})`);
+                            return target[prop].apply(target, args);
+                        };
+                    }
+
+                    console.log(`WebGL2 property accessed: ${prop}`);
+                    return target[prop];
+                },
+                set(target, prop, value) {
+                    console.log(`WebGL2 property set: ${prop} = ${JSON.stringify(value)}`);
+                    target[prop] = value;
+                    return true;
+                }
+            };
+
+            // Return the proxied WebGL2 context
+            return new Proxy(originalContext, handler);
+        };
+    }
+})();</script>
 
     <div class="main-map-container">
         <div class="sidebar sidebar-overlay">
