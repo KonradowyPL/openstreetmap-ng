@@ -1,3 +1,5 @@
+import {FakePainter} from "./_fake_painter"
+
 export const swizzleContext = () => {
     const originalCreateElement = document.createElement
     const ctxProxy = {
