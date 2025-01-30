@@ -23,17 +23,39 @@ import { isRasterStyleLayer } from "../../../../../node_modules/maplibre-gl/src/
 import { isBackgroundStyleLayer } from "../../../../../node_modules/maplibre-gl/src/render/../style/style_layer/background_style_layer"
 import { isCustomStyleLayer } from "../../../../../node_modules/maplibre-gl/src/render/../style/style_layer/custom_style_layer"
 
-export const makePainter = (_this: Painter) => {
+export const makePainter = (_this: Painter, list: SVGImageElement[]) => {
     return (
         painter: Painter,
         sourceCache: SourceCache,
         layer: StyleLayer,
-        coords: Array<OverscaledTileID>,
+        coords: OverscaledTileID[],
         renderOptions: RenderOptions,
     ) => {
         if (layer.isHidden(_this.transform.zoom)) return
         if (layer.type !== "background" && layer.type !== "custom" && !(coords || []).length) return
         _this.id = layer.id
+        const gl = _this.context.gl
+
+        console.info("Rendering", layer.type, layer.id)
+
+        const rasterLayer = () => {
+            const canvas: HTMLCanvasElement = _this.context.gl.canvas
+            const uri = canvas.toDataURL('image/webp')
+            const image = document.createElementNS("http://www.w3.org/2000/svg", "image");
+            image.setAttribute("x", "0")
+            image.setAttribute("y", "0")
+            image.setAttribute("width", `${canvas.width}`)
+            image.setAttribute("height", `${canvas.height}`)
+            image.setAttribute("href", uri);
+            list.push(image)
+        }
+
+
+        gl.clearColor(0.0, 0.0, 0.0, 0.0) // transparent
+        gl.clearDepth(1.0)
+        gl.clearStencil(0)
+
+        gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT | gl.STENCIL_BUFFER_BIT) // Clear all buffers
 
         if (isSymbolStyleLayer(layer)) {
             drawSymbols(painter, sourceCache, layer, coords, _this.style.placement.variableOffsets, renderOptions)
@@ -41,6 +63,7 @@ export const makePainter = (_this: Painter) => {
             drawCircles(painter, sourceCache, layer, coords, renderOptions)
         } else if (isHeatmapStyleLayer(layer)) {
             drawHeatmap(painter, sourceCache, layer, coords, renderOptions)
+            rasterLayer()
         } else if (isLineStyleLayer(layer)) {
             drawLine(painter, sourceCache, layer, coords, renderOptions)
         } else if (isFillStyleLayer(layer)) {
@@ -49,12 +72,17 @@ export const makePainter = (_this: Painter) => {
             drawFillExtrusion(painter, sourceCache, layer, coords, renderOptions)
         } else if (isHillshadeStyleLayer(layer)) {
             drawHillshade(painter, sourceCache, layer, coords, renderOptions)
+            rasterLayer()
         } else if (isRasterStyleLayer(layer)) {
             drawRaster(painter, sourceCache, layer, coords, renderOptions)
+            rasterLayer()
         } else if (isBackgroundStyleLayer(layer)) {
             drawBackground(painter, sourceCache, layer, coords, renderOptions)
+            rasterLayer()
         } else if (isCustomStyleLayer(layer)) {
             drawCustom(painter, sourceCache, layer, renderOptions)
+            rasterLayer()
         }
+
     }
 }

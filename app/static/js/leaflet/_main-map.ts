@@ -32,12 +32,12 @@ import { LegendSidebarToggleControl } from "./_sidebar-legend.ts"
 import { ShareSidebarToggleControl } from "./_sidebar-share.ts"
 import { configureDefaultMapBehavior } from "./_utils.ts"
 import { CustomZoomControl } from "./_zoom.ts"
-import { makePainter } from "./_fake_painter"
+
+import "./_export-image-vector.ts"
 
 /** Get the main map instance */
 const createMainMap = (container: HTMLElement): MaplibreMap => {
     console.debug("Initializing main map")
-
 
     const map = new MaplibreMap({
         container,
@@ -46,10 +46,8 @@ const createMainMap = (container: HTMLElement): MaplibreMap => {
         refreshExpiredTiles: false,
         canvasContextAttributes: { alpha: false, preserveDrawingBuffer: true },
         fadeDuration: 0,
-        // style: "http://127.0.0.1:1337/maps/basic-v2/style.json" //! REMOVE THIS!!
+        // style: "http://127.0.0.1:1337/maps/basic-v2/style.json", //! REMOVE THIS!!
     })
-    console.log(map.painter.renderLayer)
-    map.painter.renderLayer = makePainter(map.painter)
 
     window.map = map
 
